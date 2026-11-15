@@ -1,6 +1,6 @@
 # Balance Familiar
 
-PWA financiera personal para iPhone, en español de España, sin cuentas ni backend. Implementa la **fase 1** de `ESPECIFICACION_TECNICA.md`: resumen mensual, navegación inferior en móvil y lateral en escritorio, modo claro/oscuro y un diseño de mayor contraste con verde intenso y detalles lima.
+PWA de presupuesto, menús y compra familiar para iPhone, en español de España, sin cuentas ni backend. Implementa las **fases 1, 2 y 3** de `ESPECIFICACION_TECNICA.md`: presupuesto financiero, planificador de comidas, catálogo importable, listas de compra y despensa, con modo claro/oscuro.
 
 Puedes cambiar de tema con el botón de sol/luna de la cabecera o en **Más → Apariencia**. Las opciones son **Claro**, **Oscuro** y **Según el dispositivo**. La preferencia queda guardada en el navegador y funciona sin conexión.
 
@@ -22,6 +22,8 @@ Abre la dirección local que imprime Vite, normalmente `http://127.0.0.1:5173`. 
 - **Planificar:** categorías/subcategorías hasta tres niveles, reglas de ingreso y gasto, presupuestos variables, saldo inicial, objetivo mensual de ahorro y calendario de vencimientos.
 - **Movimientos:** alta, edición, eliminación y búsqueda de cobros, gastos y transferencias a/desde ahorro. Vinculación opcional a reglas, vencimientos y fondos.
 - **Ahorro:** objetivos y fondos para gastos futuros, aportaciones/retiradas reales y pagos desde fondos sin duplicar el gasto.
+- **Menús:** familia, raciones, alergias y preferencias; ingredientes con unidades y alérgenos; recetas con cantidades, pasos y coste orientativo; calendario de 7/30/31 días, asignación manual y propuestas para los huecos. Suma de ingredientes para todo el menú. El ejemplo ficticio es opcional y puede vaciarse sin borrar el presupuesto.
+- **Compra:** desde Menús en móvil o desde la barra lateral en escritorio. Catálogo Mercadona manual/CSV/JSON con vista previa, fuentes y fechas; equivalencias y envases; reservas de despensa; listas semanales; higiene/limpieza; tickets manuales, gastos sin duplicados y consumo con sobrantes. Sin consulta automática de precios.
 - **Más:** categorías, exportación JSON, restauración con vista previa/validación/confirmación, conservación de datos e instrucciones de instalación.
 - **Offline:** precaché de código, estilos e iconos. Edición y consulta tras la primera carga, sin servicios externos. Aviso para instalar nuevas versiones sin borrar IndexedDB ni interrumpir un formulario abierto.
 
@@ -63,7 +65,7 @@ La dirección local sirve para desarrollo en el PC. Para usar la app de forma in
 
 En **Más → Exportar copia**, guarda el JSON en Archivos/iCloud Drive o Descargas. Si compartir no está disponible o se deniega, se utiliza una descarga. Cancelar el diálogo de compartir no cuenta como una copia. La fecha de última copia indica generación: comprueba que el archivo realmente se guardó.
 
-Restaurar comprueba versión, checksum SHA-256, esquema, duplicados y relaciones antes de mostrar la vista previa. La confirmación reemplaza todos los registros en una única transacción; un fallo revierte la operación. No existe fusión de datos en fase 1. El archivo no se sube a ningún servidor, no está cifrado y contiene información privada.
+Restaurar comprueba versión, checksum SHA-256, esquema, duplicados y relaciones antes de mostrar la vista previa. La confirmación reemplaza todos los registros en una única transacción; un fallo revierte la operación. Las copias v4 incluyen finanzas, menús, catálogo, despensa y compras. Se admiten copias v2 y v3, verificando su checksum antes de migrarlas: las tablas de fases posteriores quedan vacías. No existe fusión de datos. El archivo no se sube a ningún servidor, no está cifrado y contiene información privada.
 
 El almacenamiento local puede ser eliminado por iOS, el navegador o el usuario. Solicitar persistencia no garantiza retención. Exporta antes de borrar datos del navegador, cambiar de dirección o dispositivo, o actualizar el sistema.
 
@@ -71,8 +73,8 @@ El almacenamiento local puede ser eliminado por iOS, el navegador o el usuario. 
 
 React + TypeScript estricto + Vite, React Router, Tailwind, componentes shadcn/ui basados en Radix, React Hook Form + Zod, Recharts, Dexie y `vite-plugin-pwa`.
 
-`src/domain` contiene dinero, recurrencias, validación y cálculos puros. `src/db` proporciona los repositorios, las diez tablas de fase 1 y las migraciones. `src/features` contiene las pantallas y el servicio de backup. `src/components` contiene los componentes comunes y el editor de formularios. `tests` separa pruebas de dominio, IndexedDB y navegador. El contrato de backup es independiente del formato interno de Dexie.
+`src/domain` contiene dinero, recurrencias, validación y cálculos puros financieros y alimentarios. `src/db` proporciona los repositorios, las veintiséis tablas y las migraciones. `src/features` contiene las pantallas y el servicio de backup. `src/integrations` contiene el proveedor de importación de catálogos. `src/components` contiene los componentes comunes y el editor de formularios. `tests` separa pruebas de dominio, IndexedDB y navegador. El contrato de backup es independiente del formato interno de Dexie.
 
 Detalles y decisiones contables: [docs/MODELO.md](docs/MODELO.md). Criterios UX: [docs/UX.md](docs/UX.md).
 
-Siguiente fase: perfiles familiares, recetas y planificación alimentaria. Mercadona, catálogo, precios, despensa y optimización siguen fuera de esta entrega.
+Guías: [planificador y límites](docs/PLANIFICADOR.md), [catálogo, compra y despensa](docs/COMPRA.md). La siguiente fase es la optimización avanzada del menú y las simulaciones.

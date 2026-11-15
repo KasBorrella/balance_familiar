@@ -43,7 +43,7 @@ Los vencimientos pagados se identifican por `expenseRuleId` + `occurrenceDate`, 
 
 ## Persistencia
 
-Diez tablas: settings, categories, incomeRules, expenseRules, monthlyBudgets, budgetAllocations, transactions, sinkingFunds, fundEntries y savingsGoals. UUID para identidades, periodo como clave de presupuesto, clave textual para settings. Índices por fecha, periodo, categoría, regla, fondo y objetivo.
+Diez tablas financieras: settings, categories, incomeRules, expenseRules, monthlyBudgets, budgetAllocations, transactions, sinkingFunds, fundEntries y savingsGoals. UUID para identidades, periodo como clave de presupuesto, clave textual para settings. Índices por fecha, periodo, categoría, regla, fondo y objetivo. La versión 3 añade seis tablas alimentarias sin modificar los datos financieros; véase [PLANIFICADOR.md](PLANIFICADOR.md).
 
 La versión 2 añade índices y migra vínculos de ingresos, vencimientos y clasificación de movimientos existentes. No elimina bases antiguas. El repositorio trabaja con instantáneas consistentes y valida el conjunto de relaciones antes de cada escritura. En este MVP doméstico las mutaciones reescriben las tablas dentro de una transacción; una futura optimización puede limitarse a filas cambiadas sin alterar el contrato del dominio. No está pensado para millones de movimientos.
 
@@ -51,6 +51,6 @@ Zod y las validaciones de dominio comprueban tipos, céntimos enteros, fechas re
 
 ## Backup
 
-Formato 2: `{schemaVersion, exportedAt, appVersion, data, checksum}`. Checksum SHA-256 sobre la representación canónica del resto del sobre. Protege frente a corrupción accidental, no demuestra autoría ni cifra información. La importación actual solo acepta formato 2; versiones desconocidas se rechazan sin mutaciones. Tamaño máximo de archivo: 20 MB.
+Formato 4: `{schemaVersion, exportedAt, appVersion, data, checksum}`. Checksum SHA-256 sobre la representación canónica del resto del sobre. Protege frente a corrupción accidental, no demuestra autoría ni cifra información. La importación acepta formatos 2, 3 y 4; los anteriores se verifican antes de añadir las tablas nuevas vacías. Versiones desconocidas se rechazan sin mutaciones. Tamaño máximo de archivo: 20 MB. La fase 3 añade diez tablas de catálogo y compra; sus tickets generan gastos por grupo sin duplicar el total. Véase [COMPRA.md](COMPRA.md).
 
 Las copias contienen el modo demo y sus indicadores originales. La restauración reproduce los datos exactamente y no cambia silenciosamente ejemplos a datos personales. `lastBackup` se actualiza después de solicitar la descarga/compartición; el navegador no permite verificar que el usuario retenga el archivo.

@@ -1,4 +1,13 @@
 import { z } from "zod";
+import { shoppingSchemas, emptyShopping } from "./shopping-models";
+import {
+  memberSchema,
+  ingredientSchema,
+  recipeSchema,
+  recipeIngredientSchema,
+  mealPlanSchema,
+  mealEntrySchema,
+} from "./meal-models";
 export const centsSchema = z.number().int().safe().min(0).max(999_999_999_999);
 export const dateSchema = z
   .string()
@@ -143,6 +152,7 @@ export const settingSchema = z
   .strict();
 export const dataSchema = z
   .object({
+    ...shoppingSchemas(dateSchema),
     settings: z.array(settingSchema),
     categories: z.array(categorySchema),
     incomeRules: z.array(incomeSchema),
@@ -153,6 +163,12 @@ export const dataSchema = z
     sinkingFunds: z.array(fundSchema),
     fundEntries: z.array(entrySchema),
     savingsGoals: z.array(goalSchema),
+    householdMembers: z.array(memberSchema),
+    ingredients: z.array(ingredientSchema),
+    recipes: z.array(recipeSchema),
+    recipeIngredients: z.array(recipeIngredientSchema),
+    mealPlans: z.array(mealPlanSchema(dateSchema)),
+    mealEntries: z.array(mealEntrySchema(dateSchema)),
   })
   .strict();
 export type Category = z.infer<typeof categorySchema>;
@@ -169,6 +185,7 @@ export type Row<K extends TableName> = Data[K][number];
 export const tableNames = Object.keys(dataSchema.shape) as TableName[];
 export function emptyData(): Data {
   return {
+    ...emptyShopping(),
     settings: [],
     categories: [],
     incomeRules: [],
@@ -179,6 +196,12 @@ export function emptyData(): Data {
     sinkingFunds: [],
     fundEntries: [],
     savingsGoals: [],
+    householdMembers: [],
+    ingredients: [],
+    recipes: [],
+    recipeIngredients: [],
+    mealPlans: [],
+    mealEntries: [],
   };
 }
 export function metadata() {

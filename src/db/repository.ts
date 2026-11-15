@@ -54,6 +54,25 @@ export class DexieFinanceRepository implements FinanceRepository {
     if (table === "transactions")
       return this.saveTransaction(row as Transaction);
     await this.mutate((data) => {
+      if (table === "ingredients") {
+        const ingredient = row as Row<"ingredients">;
+        const previous = data.ingredients.find((i) => i.id === ingredient.id);
+        if (
+          previous &&
+          previous.baseUnit !== ingredient.baseUnit &&
+          (data.recipeIngredients.some(
+            (i) => i.ingredientId === ingredient.id,
+          ) ||
+            data.ingredientProductMappings.some(
+              (i) => i.ingredientId === ingredient.id,
+            ) ||
+            data.pantryLots.some((i) => i.ingredientId === ingredient.id) ||
+            data.shoppingItems.some((i) => i.ingredientId === ingredient.id))
+        )
+          throw new Error(
+            "Este ingrediente ya se usa en recetas. Crea otro ingrediente para cambiar de unidad sin alterar sus cantidades.",
+          );
+      }
       const rows = data[table] as Row<K>[];
       const key = rowKey(row);
       const index = rows.findIndex((r) => rowKey(r) === key);
@@ -105,6 +124,26 @@ export class DexieFinanceRepository implements FinanceRepository {
   }
   async remove(table: TableName, key: string) {
     await this.mutate((data) => {
+      if (table === "shoppingLists") {
+        if (
+          data.shoppingLists.some((l) => l.id === key && l.status !== "draft")
+        )
+          throw new Error(
+            "Las listas con compra registrada se conservan en el historial.",
+          );
+        data.shoppingItems = data.shoppingItems.filter((i) => i.listId !== key);
+      }
+      if (table === "mealPlans")
+        data.mealEntries = data.mealEntries.filter((e) => e.mealPlanId !== key);
+      if (table === "recipes") {
+        if (data.mealEntries.some((e) => e.recipeId === key))
+          throw new Error(
+            "Quita primero esta receta de los menús donde aparece.",
+          );
+        data.recipeIngredients = data.recipeIngredients.filter(
+          (i) => i.recipeId !== key,
+        );
+      }
       if (table === "transactions")
         data.fundEntries = data.fundEntries.filter(
           (e) => e.transactionId !== key,

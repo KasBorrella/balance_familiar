@@ -4,6 +4,8 @@ import { App, ErrorBoundary } from "@/app/App";
 import { repository } from "@/db/repository";
 import "@/styles/index.css";
 import "@/styles/redesign.css";
+import "@/features/meal-planning/meals.css";
+import "@/features/shopping/shopping.css";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <div className="startup" role="status">

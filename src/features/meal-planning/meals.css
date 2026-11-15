@@ -1,0 +1,326 @@
+.meal-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 30px;
+  background: var(--hero);
+  color: #fff;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.meal-hero .eyebrow {
+  color: var(--hero-accent);
+}
+.meal-hero h2 {
+  font-size: clamp(25px, 3vw, 36px);
+  letter-spacing: -1px;
+  margin: 8px 0;
+}
+.meal-hero p {
+  color: #d4e5d6;
+  max-width: 480px;
+}
+.meal-hero-stats {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 12px;
+  align-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+.meal-hero-stats strong {
+  font-size: 28px;
+  color: var(--hero-accent);
+}
+.meal-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.meals-page .meal-toolbar > .field {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.meal-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 20px 0;
+}
+.meal-summary small,
+.meal-summary strong {
+  display: block;
+}
+.meal-summary small {
+  color: var(--muted);
+}
+.meal-summary strong {
+  font-size: 23px;
+  margin-top: 6px;
+}
+.meal-calendar-controls {
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.meal-calendar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.meal-day {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  min-width: 0;
+}
+.meal-day h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-muted);
+  padding: 16px 12px;
+  font-size: 14px;
+  margin: 0;
+  text-transform: capitalize;
+}
+.meal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 12px;
+  border-top: 1px solid var(--border);
+  min-height: 135px;
+  overflow-wrap: anywhere;
+}
+.meal-slot {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.meal-cell small {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: var(--muted);
+}
+.meal-cell .row-actions {
+  margin-left: auto;
+}
+.meal-cell .btn {
+  white-space: normal;
+}
+.meal-conflict {
+  background: var(--danger-bg);
+}
+.meal-ingredients-total {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 30px;
+}
+.meal-ingredients-total > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.meal-ingredients-total strong {
+  white-space: nowrap;
+}
+.meal-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.meal-recipe-grid .card {
+  margin: 0 0 12px;
+  min-width: 0;
+}
+.meal-recipe h2 {
+  margin-top: 16px;
+  font-size: 23px;
+}
+.meal-recipe-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0;
+}
+.meal-tags span {
+  padding: 5px 10px;
+  border-radius: 100px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 12px;
+}
+.meals-page details {
+  margin: 14px 0 4px;
+}
+.meals-page summary {
+  cursor: pointer;
+  min-height: 36px;
+  font-weight: 600;
+}
+.meals-page details ul {
+  padding-left: 20px;
+}
+.meals-page details li {
+  margin-bottom: 8px;
+}
+.meal-instructions {
+  white-space: pre-wrap;
+}
+.meal-record {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.meal-record > div:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.meal-record small {
+  display: block;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.meal-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.meal-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.meal-form .field,
+.meals-page .field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+.meal-form input:not([type="checkbox"]),
+.meal-form select,
+.meal-form textarea,
+.meals-page input,
+.meals-page select {
+  width: 100%;
+  min-width: 0;
+  padding: 11px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+}
+.meal-checks,
+.meal-lines {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  min-width: 0;
+}
+.meal-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+.meal-checks legend,
+.meal-lines legend {
+  font-weight: 600;
+  padding: 0 4px;
+}
+.meal-checks label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.meal-checks input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+.meal-ingredient-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 90px auto;
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+@media (max-width: 1100px) {
+  .meal-calendar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .meals-page .meal-toolbar > .field {
+    flex-basis: 100%;
+  }
+  .meal-hero {
+    padding: 22px;
+    flex-direction: column;
+  }
+  .meal-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .meal-hero-stats svg:nth-of-type(2) {
+    margin-left: 14px;
+  }
+  .meal-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .meal-recipe-grid,
+  .meal-ingredients-total {
+    grid-template-columns: 1fr;
+  }
+  .meal-form {
+    padding: 18px;
+  }
+  .meal-ingredient-line {
+    grid-template-columns: minmax(0, 1fr) 80px;
+  }
+  .meal-ingredient-line > button {
+    grid-column: 1/-1;
+    justify-self: end;
+  }
+  .mobile-nav a {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    font-size: 10px;
+  }
+}
+@media (max-width: 380px) {
+  .meal-calendar,
+  .meal-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .meal-day {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .meal-cell {
+    min-height: 100px;
+  }
+}
