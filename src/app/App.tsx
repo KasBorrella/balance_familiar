@@ -24,6 +24,8 @@ import {
   X,
   Sun,
   Moon,
+  Utensils,
+  ShoppingBasket,
 } from "lucide-react";
 import { ThemeProvider, useTheme } from "./theme";
 import { repository } from "@/db/repository";
@@ -35,6 +37,8 @@ import { Planning } from "@/features/budgets/Planning";
 import { Transactions } from "@/features/transactions/Transactions";
 import { Savings } from "@/features/savings/Savings";
 import { Settings } from "@/features/backup/Settings";
+import { Meals } from "@/features/meal-planning/Meals";
+import { Shopping } from "@/features/shopping/Shopping";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/dialog";
 import { Editor, errorMessage } from "@/components/editor";
@@ -43,6 +47,8 @@ const navigation = [
   { path: "/planificar", label: "Planificar", icon: ChartNoAxesCombined },
   { path: "/movimientos", label: "Movimientos", icon: ArrowLeftRight },
   { path: "/ahorro", label: "Ahorro", icon: PiggyBank },
+  { path: "/menus", label: "Menús", icon: Utensils },
+  { path: "/compra", label: "Compra", icon: ShoppingBasket },
   { path: "/mas", label: "Más", icon: Ellipsis },
 ];
 export class ErrorBoundary extends Component<
@@ -114,6 +120,7 @@ function Shell() {
   }, [toast]);
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.querySelector(".main-shell")?.scrollTo(0, 0);
   }, [location.pathname]);
   if (!data)
     return (
@@ -317,6 +324,8 @@ function Shell() {
                 <Route path="/movimientos" element={<Transactions />} />
                 <Route path="/ahorro" element={<Savings />} />
                 <Route path="/mas" element={<Settings />} />
+                <Route path="/menus" element={<Meals />} />
+                <Route path="/compra" element={<Shopping />} />
                 <Route
                   path="*"
                   element={
@@ -335,12 +344,14 @@ function Shell() {
           </div>
         </div>
         <nav className="mobile-nav" aria-label="Navegación móvil">
-          {navigation.map(({ path, label, icon: Icon }) => (
-            <NavLink key={path} to={path} end={path === "/"}>
-              <Icon size={21} />
-              <span>{label}</span>
-            </NavLink>
-          ))}
+          {navigation
+            .filter((n) => n.path !== "/compra")
+            .map(({ path, label, icon: Icon }) => (
+              <NavLink key={path} to={path} end={path === "/"}>
+                <Icon size={21} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
         </nav>
         <Button
           className="mobile-fab"
@@ -377,7 +388,13 @@ function Shell() {
           </span>
           <Button
             disabled={!!editor || deleting}
-            onClick={() => void updateServiceWorker(true)}
+            onClick={() => {
+              if (document.querySelector('[role="dialog"]')) {
+                notify("Termina de editar antes de actualizar.");
+                return;
+              }
+              void updateServiceWorker(true);
+            }}
           >
             Actualizar
           </Button>
@@ -389,7 +406,17 @@ function Shell() {
       {confirmation && (
         <Modal
           title={`¿Eliminar ${confirmation.name}?`}
-          description="No se puede deshacer. Los cobros y pagos ya anotados se conservarán si eliminas una previsión."
+          description={
+            [
+              "mealPlans",
+              "mealEntries",
+              "recipes",
+              "ingredients",
+              "householdMembers",
+            ].includes(confirmation.table)
+              ? "No se puede deshacer. Borrar un menú también elimina sus comidas. Las recetas y los ingredientes que estén en uso no se pueden eliminar."
+              : "No se puede deshacer. Los cobros y pagos ya anotados se conservarán si eliminas una previsión."
+          }
           onClose={() => {
             if (!deleting) setConfirmation(null);
           }}

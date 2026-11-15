@@ -1616,12 +1616,29 @@ select[aria-invalid="true"] {
   }
 }
 @media (max-width: 760px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+  .app-layout {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+  }
   .sidebar {
     display: none;
   }
   .main-shell {
     margin: 0;
     width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
   }
   .topbar {
     height: 70px;
@@ -1841,10 +1858,10 @@ select[aria-invalid="true"] {
     text-align: right;
   }
   .mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    /* A separate footer in the viewport-sized shell: only main-shell scrolls. */
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;

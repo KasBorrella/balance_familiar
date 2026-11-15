@@ -1,6 +1,6 @@
 # UX elegida
 
-**Interfaz actualizada el 15 de noviembre de 2026:** verde intenso, acentos lima, reservas en violeta y gastos en naranja. Importes con mayor tamaño y peso, tarjetas diferenciadas y un indicador circular del porcentaje de ingresos previstos ya asignados. Navegación de cinco destinos. Los colores de texto, superficies, controles, gráficos y avisos se definen mediante variables compartidas; no se utilizan filtros para simular el modo oscuro.
+**Interfaz actualizada el 15 de noviembre de 2026:** verde intenso, acentos lima, reservas en violeta y gastos en naranja. Importes con mayor tamaño y peso, tarjetas diferenciadas y un indicador circular del porcentaje de ingresos previstos ya asignados. Navegación de seis destinos con Menús en la fase 2. Los colores de texto, superficies, controles, gráficos y avisos se definen mediante variables compartidas; no se utilizan filtros para simular el modo oscuro.
 
 ## Apariencia y textos
 
@@ -12,12 +12,15 @@ Textos en español de España, breves y descriptivos: «Resumen del mes», «Pre
 
 ## Arquitectura de información
 
+La fase 3 añade Compra en escritorio y el acceso «Lista de compra y despensa» desde Menús en móvil. La barra inferior conserva seis destinos. Compra agrupa Lista, Catálogo, Despensa y Compras; la importación muestra vista previa antes de guardar y el ticket se confirma antes de registrar gastos.
+
 | Destino     | Tarea                                                          |
 | ----------- | -------------------------------------------------------------- |
 | Resumen     | Entender previsión, realidad, pagos y excesos del mes.         |
 | Planificar  | Repartir ingresos, configurar gastos y consultar vencimientos. |
 | Movimientos | Registrar y corregir lo que realmente ha ocurrido.             |
 | Ahorro      | Construir objetivos y reservar para gastos futuros.            |
+| Menús       | Organizar familia, recetas, calendario e ingredientes.         |
 | Más         | Categorías, copias, instalación y almacenamiento.              |
 
 El mes se conserva al navegar durante la sesión; al reabrir se muestra el mes actual. La navegación es inferior en móvil y lateral en escritorio. Los formularios se presentan como panel inferior móvil o diálogo de escritorio con foco controlado, Escape, etiquetas visibles y errores junto al campo.

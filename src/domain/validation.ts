@@ -1,6 +1,8 @@
 import { dataSchema, tableNames, type Data } from "./models";
 import { descendants } from "./finance";
 import { occurrences } from "./calendar";
+import { validateMeals } from "./meals";
+import { validateShopping } from "./shopping";
 export function validateData(input: unknown): Data {
   const data = dataSchema.parse(input);
   function assert(ok: unknown, message: string): asserts ok {
@@ -169,6 +171,8 @@ export function validateData(input: unknown): Data {
     else
       assert(!e.transactionId, "Las aportaciones y retiradas no son gastos.");
   }
+  validateMeals(data);
+  validateShopping(data);
   return data;
 }
 export function validateNewOccurrence(

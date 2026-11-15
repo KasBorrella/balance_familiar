@@ -1,4 +1,32 @@
-# Verificación de fase 1
+# Verificación
+
+## Barra inferior móvil — 15 de noviembre de 2026
+
+La pantalla móvil usa un contenedor de altura `100dvh` con navegación inferior fuera de la zona desplazable. Solo `.main-shell` hace scroll; al cambiar de sección se devuelve ese contenedor al inicio. Se conserva el margen seguro inferior del iPhone. En escritorio se mantiene el scroll de la ventana.
+
+TypeScript, ESLint y build correctos; 10 E2E aprobados. La prueba añadida comprueba inicio, mitad y final del contenido, alturas de ventana de 680/844/900 px, cambio de sección, apertura/cierre de un diálogo y vuelta a escritorio. El comportamiento original no se reprodujo en Chromium; el cambio evita depender del posicionamiento fijo durante el scroll del documento. Pendiente confirmar el resultado en el iPhone donde se observó el fallo.
+
+## Fase 3 — 15 de noviembre de 2026
+
+- TypeScript estricto, ESLint y compilación con `/balance_familiar/`: correctos.
+- 52 pruebas de dominio e IndexedDB aprobadas, incluidas selección exacta de formatos comparada con búsqueda exhaustiva, importación CSV/JSON, errores por fila, atomicidad, reservas, caducidades, alergias, tickets y consumo único.
+- 9 recorridos E2E aprobados con service worker real. El nuevo recorrido crea un menú, rechaza un catálogo duplicado, importa el corregido, vincula un ingrediente, reserva un lote, registra el ticket sin conexión, anota consumo, conserva sobrantes y restaura una copia.
+- Se verifica un solo movimiento financiero para el ticket alimentario y un aviso al superar el límite de compra. Se mantienen los ocho recorridos anteriores.
+- Vistas Lista/Catálogo/Despensa/Compras comprobadas sin desbordamiento en 320, 390 y 1440 px, en claro y oscuro. Capturas en `test-results/compra-*.png`.
+- Migración Dexie v3 → v4 y lectura de copias v2/v3/v4. Sin consulta externa de precios ni despliegue de la rama. Safari en iPhone físico sigue pendiente.
+
+Funcionamiento y límites de esta fase: [COMPRA.md](COMPRA.md).
+
+## Fase 2 — 15 de noviembre de 2026
+
+- TypeScript, lint y compilación para `/balance_familiar/`: correctos.
+- 42 pruebas de dominio e IndexedDB aprobadas: incluyen restricciones alimentarias, raciones, costes parciales, repeticiones, calendarios y migración desde v2 sin pérdida financiera.
+- 8 pruebas E2E aprobadas contra el build con service worker y la subruta de GitHub Pages. Los seis recorridos financieros y de apariencia anteriores siguen funcionando.
+- Alta manual de familia, ingredientes y recetas; menú de 31 días; generación semanal; avisos tras cambiar alergias; bloqueo de asignaciones incompatibles; edición y recarga offline; copia completa, vaciado del planificador y restauración.
+- Comprobación de anchuras 320/390/1440 en claro y oscuro. Capturas generadas en `test-results/menus-*.png` (no se versionan).
+- Sigue pendiente la instalación y actualización en Safari de un iPhone físico. No se ha publicado esta rama.
+
+Guía funcional y límites: [PLANIFICADOR.md](PLANIFICADOR.md).
 
 ## Actualización visual — 15 de noviembre de 2026
 
@@ -19,17 +47,17 @@ Fecha de trabajo: 14 de noviembre de 2026. Entorno: Windows, PowerShell, Node 24
 
 Las pruebas de navegador se ejecutan contra `vite preview` con el build y service worker, usando datos ficticios en contextos de navegador aislados.
 
-| Comprobación | Resultado |
-| --- | --- |
-| `npm install` | Completado; dependencias fijadas en package-lock.json. |
-| `npm run typecheck` | Correcto, TypeScript estricto. |
-| `npm run lint` | Correcto. |
-| `npm run test` | 31 pruebas aprobadas en 3 archivos. |
-| `npm run build` | Build estático y service worker generados. |
-| Build con `VITE_BASE_PATH=/balance-familiar/` | Correcto, 19 recursos precacheados (~1,04 MiB). |
-| Playwright sobre el build final en `/` | 4 pruebas aprobadas. |
-| Playwright bajo `/balance-familiar/` | 4 pruebas aprobadas. |
-| `npm audit --omit=dev` | 0 vulnerabilidades. |
+| Comprobación                                  | Resultado                                              |
+| --------------------------------------------- | ------------------------------------------------------ |
+| `npm install`                                 | Completado; dependencias fijadas en package-lock.json. |
+| `npm run typecheck`                           | Correcto, TypeScript estricto.                         |
+| `npm run lint`                                | Correcto.                                              |
+| `npm run test`                                | 31 pruebas aprobadas en 3 archivos.                    |
+| `npm run build`                               | Build estático y service worker generados.             |
+| Build con `VITE_BASE_PATH=/balance-familiar/` | Correcto, 19 recursos precacheados (~1,04 MiB).        |
+| Playwright sobre el build final en `/`        | 4 pruebas aprobadas.                                   |
+| Playwright bajo `/balance-familiar/`          | 4 pruebas aprobadas.                                   |
+| `npm audit --omit=dev`                        | 0 vulnerabilidades.                                    |
 
 Casos comprobados: céntimos y entradas inválidas; meses activos; inicio/fin; años bisiestos; días 31; semanas y cambios de año; anual/trimestral/único; jerarquía sin duplicados; 205 → 225; julio sin extraescolares; 450 sin asignar; déficit negativo; cobertura parcial de provisiones; clasificación histórica de gastos; límites variables por categoría; CRUD y reapertura de IndexedDB; demo que no reaparece tras limpiar; migración v1 → v2; relaciones inválidas; pagos/consumo de fondo atómicos; rollback por error simulado; exportación/restauración exacta; checksum, duplicados y versiones inválidas.
 

@@ -44,6 +44,26 @@ export function createDatabase(name = "balance-familiar"): FinanceDB {
           row.notes ??= "";
         });
     });
+  database.version(3).stores({
+    householdMembers: "&id,type,active",
+    ingredients: "&id,name",
+    recipes: "&id,name",
+    recipeIngredients: "&id,recipeId,ingredientId,[recipeId+ingredientId]",
+    mealPlans: "&id,startDate,endDate",
+    mealEntries: "&id,mealPlanId,date,recipeId,[mealPlanId+date+slot]",
+  });
+  database.version(4).stores({
+    supermarkets: "&id,name",
+    products: "&id,supermarketId,[supermarketId+externalSku]",
+    ingredientProductMappings: "&id,ingredientId,&productId",
+    priceObservations: "&id,productId,observedAt",
+    pantryLots: "&id,ingredientId,expiryDate,purchaseId",
+    shoppingLists: "&id,mealPlanId,startDate,status",
+    shoppingItems: "&id,listId,productId",
+    purchases: "&id,&listId,date",
+    purchaseItems: "&id,purchaseId,shoppingItemId",
+    catalogImports: "&id,checksum",
+  });
   return database;
 }
 export const db = createDatabase();
