@@ -2,14 +2,27 @@
 
 ## Preparar GitHub Pages
 
+El repositorio actual es `KasBorrella/balance_familiar`. Se incluye `.github/workflows/deploy-pages.yml`, que compila y publica únicamente `dist/` al subir cambios a `main` o al ejecutarlo manualmente.
+
+1. En GitHub, abre **Settings → Pages → Build and deployment → Source** y selecciona **GitHub Actions**.
+2. Sube el archivo del workflow al repositorio.
+3. En **Actions**, espera a que termine **Publicar en GitHub Pages**. Si ya estaba subido antes de cambiar Source, ejecútalo con **Run workflow**.
+4. Abre `https://kasborrella.github.io/balance_familiar/`.
+
+El workflow obtiene la subruta de la configuración de Pages y se la pasa a Vite. Así, también se adaptan el manifest, los iconos y el service worker. No hay que subir `dist` al repositorio: Actions lo genera y publica como artefacto.
+
+Si se publica directamente la raíz de `main`, Pages sirve el `index.html` de desarrollo: contiene `/src/main.tsx` y `%BASE_URL%`, y el navegador no puede arrancar la aplicación. Este fue el motivo de la pantalla en blanco comprobada el 15 de noviembre de 2026.
+
+## Compilación manual alternativa
+
 El hosting sirve código, estilos, iconos y service worker. No necesita Node en producción, ordenador encendido, cuenta dentro de la aplicación, API ni base de datos remota.
 
 1. Crea o utiliza un repositorio para el **código** del proyecto. No incluyas copias JSON ni datos privados.
-2. Para Pages de un repositorio llamado `balance-familiar`, compila desde PowerShell:
+2. Para Pages de este repositorio, `balance_familiar`, compila desde PowerShell:
 
 ```powershell
 npm ci
-$env:VITE_BASE_PATH = '/balance-familiar/'
+$env:VITE_BASE_PATH = '/balance_familiar/'
 npm run build
 Remove-Item Env:VITE_BASE_PATH
 ```
@@ -19,11 +32,7 @@ Usa el nombre exacto de la subruta, incluyendo guiones o guiones bajos. Para dom
 3. Publica **el contenido generado en `dist/`**, mediante un workflow de GitHub Pages o una rama dedicada. No publiques la carpeta completa de trabajo como artefacto de Pages. Si usas una rama, añade `.nojekyll` junto a `index.html`.
 4. En Pages activa HTTPS y abre la URL publicada. Comprueba en las herramientas del navegador que `manifest.webmanifest`, iconos y `sw.js` responden correctamente bajo esa subruta.
 
-No se incluye un workflow que publique automáticamente: este proyecto no tiene remoto ni configuración de Pages asociada. La publicación inicial se hará una vez elegido ese destino.
-
-## Ejemplo de pasos de un workflow
-
-En un workflow de Pages, después del checkout, configura Node, ejecuta `npm ci` y `npm run build` con `VITE_BASE_PATH` en el entorno. Sube únicamente `dist` con la acción oficial de upload-pages-artifact y despliega ese artefacto con deploy-pages. Revisa las versiones oficiales de las acciones al crear el workflow; no se necesitan secretos financieros ni credenciales de la app.
+El workflow incluido realiza la instalación, comprobación de tipos, lint, pruebas y compilación antes de publicar. No necesita secretos financieros ni credenciales de la aplicación.
 
 ## Uso en iPhone
 
